@@ -1,0 +1,5 @@
+**__pycache__**
+*.log
+**/electron/node_modules/*
+**/electron/release-builds/*
+**/profiles/*
