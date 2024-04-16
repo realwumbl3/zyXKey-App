@@ -15,12 +15,18 @@ from pynput.keyboard import (
     KeyCode,
 )
 
+VOL_UP = KeyCode.from_vk(0xAF)
+VOL_DOWN = KeyCode.from_vk(0xAE)
+PREV_MEDIA = KeyCode.from_vk(0xB1)
+NEXT_MEDIA = KeyCode.from_vk(0xB0)
+PAUSE_MEDIA = KeyCode.from_vk(0xB3)
+SCREENSHOT = KeyCode.from_vk(0x2C)
+
 from zyXKey import xyZkey
 
 from seleniumOverlay import SeleniumOverlay
 
 from tasktray import taskbarIconThread
-
 
 from pynput.mouse import Controller as mouseController, Button as mouseButtons
 
@@ -46,13 +52,6 @@ def main():
     XyZkey.xKeyAdd("pause", Key.pause)
 
     Mouse = mouseController()
-
-    VOL_UP = KeyCode.from_vk(0xAF)
-    VOL_DOWN = KeyCode.from_vk(0xAE)
-    PREV_MEDIA = KeyCode.from_vk(0xB1)
-    NEXT_MEDIA = KeyCode.from_vk(0xB0)
-    PAUSE_MEDIA = KeyCode.from_vk(0xB3)
-    SCREENSHOT = KeyCode.from_vk(0x2C)
 
     # Back
     @XyZkey.bind("gesture", modifier_key=Key.f13, cooldown=0.2, direction="left")
@@ -168,7 +167,7 @@ def main():
 
     if OVERLAY_ENABLED:
         OVERLAY = SeleniumOverlay()
-        OVERLAY.go("https://xyzKey.wumbl3.xyz/xyzKey/v3/body.html")
+        OVERLAY.go("https://zyxkey.wumbl3.xyz/interfaces/v3/body.html")
 
     TASKBAR_ICO = taskbarIconThread(exit_func=KILL_APP)
 

@@ -1,14 +1,9 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 
-/*
-function returnMonitorList()
-function fullscrenOnMonitor()
-*/
-
 let windowGlobal
 
-const centerInMain = () => {
+function centerInMain() {
     try {
         windowGlobal.moveTop()
         windowGlobal.setPosition(0, 0)
@@ -18,29 +13,24 @@ const centerInMain = () => {
     }
 }
 
-const setUpIpc = () => {
+function setUpIpc() {
     const { ipcMain } = require('electron')
-    const ipcEvents = {
+    for (let [ev, fn] of Object.entries({
         'send': (_, event, data) => {
             switch (event) {
                 case "openDevTools":
                     windowGlobal.webContents.openDevTools()
                     break
                 case "minMax":
-                    if (data.minimize) {
-                        windowGlobal.setPosition(0, -200000)
-                    }
-                    else if (data.restore) {
-                        centerInMain()
-                    }
+                    if (data.minimize) return windowGlobal.setPosition(0, -200000)
+                    if (data.restore) return centerInMain()
                     break
             }
         }
-    }
-    for (let [ev, fn] of Object.entries(ipcEvents)) ipcMain.on(ev, fn)
+    })) ipcMain.on(ev, fn)
 }
 
-const createWindow = () => {
+function createWindow() {
     windowGlobal = new BrowserWindow({
         width: 777,
         height: 777,
@@ -52,12 +42,10 @@ const createWindow = () => {
         }
     })
     windowGlobal.setSkipTaskbar(true);
-    // windowGlobal.
     windowGlobal.setIgnoreMouseEvents(true);
-    windowGlobal.loadURL('https://xyzKey.wumbl3.xyz/xyzKey/init.html')
+    windowGlobal.loadFile('index.html')
     centerInMain()
     setUpIpc()
-    // mainWindow.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
