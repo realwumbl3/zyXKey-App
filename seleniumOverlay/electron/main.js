@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 
+/** @type {BrowserWindow} */
 let windowGlobal
 
 function centerInMain() {
@@ -22,7 +23,11 @@ function setUpIpc() {
                     windowGlobal.webContents.openDevTools()
                     break
                 case "minMax":
-                    if (data.minimize) return windowGlobal.setPosition(0, -200000)
+                    if (data.minimize) {
+                        windowGlobal.setPosition(0, -200000)
+                        windowGlobal.setFullScreen(false)
+                        return
+                    }
                     if (data.restore) return centerInMain()
                     break
             }
